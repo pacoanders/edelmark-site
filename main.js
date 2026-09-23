@@ -15,6 +15,23 @@
   link.hidden = false;
 })();
 
+/* EdelMark — apparition des trois étapes, 1 puis 2 puis 3 */
+(function () {
+  "use strict";
+  var steps = document.querySelector(".steps");
+  if (!steps || !("IntersectionObserver" in window)) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  steps.classList.add("anim");
+  var io = new IntersectionObserver(function (entries) {
+    if (entries[0].isIntersecting) {
+      io.disconnect();
+      steps.classList.add("is-visible");
+    }
+  }, { threshold: 0.25 });
+  io.observe(steps);
+})();
+
 /* EdelMark — comparateur avant/après */
 (function () {
   "use strict";
