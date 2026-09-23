@@ -6,14 +6,13 @@
 (function () {
   "use strict";
   var WA_CODE = "78314078714";
-  var MESSAGE = "Bonjour, j'aimerais vous parler de mon outil actuel : ";
+  var MESSAGE = "Bonjour, j'aimerais parler d'une formation IA pour mon équipe : ";
 
-  var box = document.querySelector(".wa");
-  if (!box || !/^\d{9,15}$/.test(WA_CODE)) return;
+  var link = document.querySelector(".wa-link");
+  if (!link || !/^\d{9,15}$/.test(WA_CODE)) return;
   var num = WA_CODE.split("").reverse().join("");
-  box.querySelector(".wa-link").href =
-    "https://wa.me/" + num + "?text=" + encodeURIComponent(MESSAGE);
-  box.hidden = false;
+  link.href = "https://wa.me/" + num + "?text=" + encodeURIComponent(MESSAGE);
+  link.hidden = false;
 })();
 
 /* EdelMark — comparateur avant/après */
