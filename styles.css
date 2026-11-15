@@ -165,14 +165,19 @@ h1 {
 }
 
 .hanger {
-  --spin: 1;
+  --hang: 0deg;
+  --rx: 0deg;
+  --ry: 0deg;
+  --gx: 46%;
+  --gy: 34%;
   flex: 1 1 0;
   min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: rotate(calc(var(--tilt) * var(--spin)));
-  transform-origin: 50% 0;
+  perspective: 1100px;
+  transform: rotate(var(--hang));
+  transform-origin: 50% 9px;
 }
 
 .clip {
@@ -197,7 +202,8 @@ h1 {
 .scene {
   position: relative;
   width: 100%;
-  perspective: 1100px;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
 }
 
 .inner {
@@ -252,10 +258,9 @@ h1 {
       #f6bdd8 82%,
       #f7e0ae 100%
     );
-  background-size: 100% 100%, 100% 100%, 140% 140%, 180% 180%;
-  background-position: 0 0, 0 0, 0 0, 0% 40%;
+  background-size: 140% 140%, 140% 140%, 160% 160%, 180% 180%;
+  background-position: var(--gx) var(--gy), calc(100% - var(--gx)) calc(100% - var(--gy)), var(--gx) var(--gy), var(--gx) var(--gy);
   border: 1px solid rgba(255, 255, 255, 0.55);
-  animation: holo 8s ease-in-out infinite alternate;
 }
 
 .back::before,
@@ -276,29 +281,18 @@ h1 {
 }
 
 .back::after {
-  inset: -35%;
-  background: linear-gradient(
-    115deg,
-    transparent 42%,
-    rgba(255, 255, 255, 0.7) 49%,
-    rgba(190, 230, 255, 0.25) 52%,
-    transparent 60%
+  inset: 0;
+  background: radial-gradient(
+    130% 90% at var(--gx) var(--gy),
+    rgba(255, 255, 255, 0.82),
+    rgba(255, 230, 250, 0.28) 18%,
+    rgba(180, 220, 255, 0.12) 34%,
+    transparent 58%
   );
   mix-blend-mode: soft-light;
-  animation: gloss 5.5s ease-in-out infinite;
 }
 
 .back > * { position: relative; z-index: 1; }
-
-@keyframes holo {
-  from { background-position: 0 0, 0 0, 0 0, 0% 30%; }
-  to { background-position: 0 0, 0 0, 20% 0, 70% 80%; }
-}
-
-@keyframes gloss {
-  from { transform: translateX(-12%) rotate(8deg); }
-  to { transform: translateX(12%) rotate(8deg); }
-}
 
 .meta {
   display: flex;
@@ -451,8 +445,8 @@ h1 {
 
 @media (prefers-reduced-motion: reduce) {
   .inner { transition: none; }
-  .back,
-  .back::after { animation: none; }
+  .hanger { transform: none; }
+  .scene { transform: none; }
 }
 
 @media (max-width: 980px) {
@@ -460,7 +454,6 @@ h1 {
   .mast-right { text-align: left; max-width: 40ch; }
   .wire { display: none; }
   .row {
-    --spin: 0.45;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 34px 16px;
@@ -481,7 +474,6 @@ h1 {
 
 @media (max-width: 560px) {
   .row {
-    --spin: 0.2;
     grid-template-columns: 1fr;
     max-width: 420px;
     margin-inline: auto;
