@@ -23,9 +23,10 @@
 }
 
 :root {
-  --bg: #000000;
-  --surface: #2a2a2a;
-  --frame: #101010;
+  --bg: #1c1c1e;
+  --surface: #323236;
+  --frame: #141416;
+  --radius: 20px;
   --line: #3c3c3c;
   --text: #f3f3f1;
   --muted: #9a9a9a;
@@ -109,7 +110,7 @@ h1 {
 .title-main,
 .title-sub { display: block; }
 
-.title-sub { color: rgba(255, 212, 0, 0.58); }
+.title-sub { color: #ffd400; }
 
 .mast-right {
   max-width: 28ch;
@@ -207,7 +208,8 @@ h1 {
 }
 
 .face {
-  border-radius: 3px;
+  border-radius: var(--radius);
+  overflow: hidden;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
@@ -223,8 +225,9 @@ h1 {
 .front {
   position: relative;
   background: var(--surface);
-  border: 1px solid #404040;
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45);
+  border: 1px solid #4a4a50;
+  border-radius: var(--radius);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.35);
 }
 
 .back {
@@ -232,6 +235,7 @@ h1 {
   inset: 0;
   transform: rotateY(180deg);
   overflow: hidden;
+  border-radius: var(--radius);
   color: #161616;
   background-color: #efeae2;
   background-image:
@@ -322,11 +326,10 @@ h1 {
   position: relative;
   margin-top: 10px;
   aspect-ratio: 4 / 3;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 28%),
-    var(--frame);
-  border: 1px solid #3a3a3a;
-  box-shadow: inset 0 0 0 1px #161616;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--frame);
+  border: 1px solid #3e3e44;
 }
 
 .frame img {
@@ -398,7 +401,7 @@ h1 {
   margin: 0;
   padding: 0;
   border: 0;
-  border-radius: 3px;
+  border-radius: var(--radius);
   background: transparent;
   cursor: pointer;
 }
