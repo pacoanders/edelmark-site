@@ -1,243 +1,254 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" data-type="service" data-radius="soft" data-buttons="block" data-motion="reduced-ready">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>EdelMark — Audit IA pour les commerces du canton de Vaud</title>
-  <meta name="description" content="Audit sur place pour les salons de coiffure, les instituts de massage et les commerces vaudois. Ensuite, le site ou l’outil qu’il faut, et un suivi si vous le voulez.">
-  <meta name="theme-color" content="#161513">
-  <meta name="color-scheme" content="dark">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>EdelMark — Sites, réseaux et IA, canton de Vaud</title>
+  <meta name="description" content="EdelMark, canton de Vaud. Paco-Anders Rivas tient le site et les réseaux, sur devis, et une IA sur les données de l’entreprise, en abonnement mensuel.">
+  <meta name="page-type" content="service">
+  <meta name="site-kind" content="other">
+  <meta name="theme-color" content="#e8e8e3">
+  <meta name="color-scheme" content="light">
+  <meta property="og:title" content="EdelMark — Sites, réseaux et IA, canton de Vaud">
+  <meta property="og:description" content="Le site et les réseaux, sur devis. L’IA sur les données de l’entreprise, en abonnement mensuel. Canton de Vaud.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_CH">
+  <meta property="og:url" content="https://edelmark.ch/">
+  <meta property="og:image" content="https://edelmark.ch/paco-portrait.jpg">
+  <script>document.documentElement.classList.add("js");if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("motion");</script>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<!--
+  kind: service. EdelMark, Paco-Anders Rivas, canton de Vaud.
+  deal: palette paper-grey-brass (papier d’imprimerie, laiton, boutons encre);
+  type Onest; hero split; nav-mega; footer-columns; close-type; rhythm surface-pairs;
+  buttons block; mark arc. Moment: word-highlight.
+  Laiton traité #6c6418 : le #bfb21a tiré au sort est à 1,78:1 sur le papier.
+  photo-chapters et pinned-chapters non montés : un seul portrait, aucun chantier client.
+-->
 
 <header class="site-header">
   <div class="wrap header-inner">
-    <a class="brand" href="#top">EdelMark</a>
-    <a class="header-link" href="#contact">Demander un audit</a>
+    <a class="skip-link" href="#top">Aller au contenu</a>
+    <a class="brand" href="#top">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M7 21C10 10 22 10 25 21" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      </svg>
+      <span>EdelMark</span>
+    </a>
+
+    <nav class="nav-desk" aria-label="Pages">
+      <div class="nav-offres">
+        <button type="button" class="nav-drop" aria-expanded="false" aria-controls="offres-panel">Offres</button>
+        <div class="mega" id="offres-panel" hidden>
+          <div class="wrap mega-grid">
+            <a href="#site">
+              <span class="mega-title">Site et réseaux</span>
+              <span class="mega-price">Sur devis</span>
+              <span class="mega-line">La page, les publications, les réponses.</span>
+            </a>
+            <a href="#ia">
+              <span class="mega-title">IA sur vos données</span>
+              <span class="mega-price">Abonnement mensuel</span>
+              <span class="mega-line">Vos données restent dans l’entreprise.</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <a href="#page">Site</a>
+      <a href="#methode">Méthode</a>
+      <a href="#donnees">Données</a>
+      <a href="#paco">Paco</a>
+    </nav>
+
+    <a class="btn btn-primary nav-cta" href="mailto:contact@edelmark.ch?subject=Devis%20%E2%80%94%20EdelMark">Demander un devis</a>
+
+    <button type="button" class="menu-btn" aria-expanded="false" aria-controls="menu">
+      <span class="menu-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Menu</span>
+    </button>
+  </div>
+
+  <div class="menu" id="menu" hidden>
+    <div class="wrap menu-inner">
+      <a href="#offres">Offres</a>
+      <a href="#page">Site</a>
+      <a href="#methode">Méthode</a>
+      <a href="#donnees">Données</a>
+      <a href="#paco">Paco</a>
+      <a class="btn btn-primary" href="mailto:contact@edelmark.ch?subject=Devis%20%E2%80%94%20EdelMark">Demander un devis</a>
+    </div>
   </div>
 </header>
 
 <main id="top">
 
-  <section class="hero wrap">
-    <h1>Votre site et vos outils vous ralentissent : l’audit dit quoi changer en premier.</h1>
-    <p>Salons de coiffure, instituts de massage et les commerces du canton de Vaud qui leur ressemblent. Je passe une à deux heures sur place — le site, les logiciels, les abonnements — et vous recevez un rapport court : le temps perdu, ce que l’IA peut prendre, et ce qu’il faut construire.</p>
-    <p>D’autres PME de Suisse romande entrent dans le même audit, dès que le site ou les outils bloquent. Le canton de Vaud vient en premier.</p>
-    <div class="actions">
-      <a class="btn btn-primary" href="#contact">Demander un audit</a>
-      <a class="btn btn-text" href="#mise-en-place">La mise en place</a>
-    </div>
-  </section>
-
-  <section class="offres wrap" id="offres">
-    <h2>Trois offres, dans l’ordre</h2>
-    <div class="formats">
-      <article class="format">
-        <h3>L’audit</h3>
-        <div>
-          <p>Une visite d’une à deux heures, dans vos locaux. Je regarde le site tel qu’un client le voit, les logiciels, l’informatique, la téléphonie, et les abonnements : ce qui sert, ce qui fait double emploi. J’y ajoute les tâches qui reviennent — messages, devis, factures, rendez-vous.</p>
-          <p>Le rapport fait trois à cinq pages. Il retient quelques gains, en heures et en francs, à partir de vos chiffres. Je n’annonce pas une économie que je n’ai pas mesurée chez vous.</p>
-          <p>Le prix de l’audit est annoncé avant la visite.</p>
+  <section class="hero" data-enter>
+    <div class="wrap hero-grid">
+      <div class="hero-text">
+        <p class="notice">Sur devis pour le site. Abonnement mensuel pour l’IA.</p>
+        <h1>
+          <span class="line"><span class="line-in">Sites, réseaux et IA</span></span>
+          <span class="line"><span class="line-in">pour le canton de Vaud</span></span>
+        </h1>
+        <p class="lead enter-piece" style="--i:0">Je tiens le site et les réseaux. L’IA travaille sur vos données, qui restent les vôtres.</p>
+        <div class="actions enter-piece" style="--i:1">
+          <a class="btn btn-primary" href="mailto:contact@edelmark.ch?subject=Devis%20%E2%80%94%20EdelMark">Demander un devis</a>
+          <a class="btn btn-secondary" href="#offres">Voir les offres</a>
         </div>
-      </article>
-      <article class="format" id="mise-en-place">
-        <h3>La mise en place</h3>
-        <div>
-          <p>Le rapport fixe l’ordre. Je livre la première chose qui compte.</p>
-          <p>Le site. Une page claire, en français : ce que vous faites, où vous êtes, comment on réserve. Elle remplace une vitrine que le client ne comprend pas.</p>
-          <p>L’outil. Quand une tâche revient chaque semaine et qu’un tableur ou un vieux logiciel ne suffit plus, je construis l’outil qui la fait : rendez-vous, devis, facture, relance, réponse simple aux clients. Si un abonnement coûte trop cher pour ce qu’il rend, le rapport le dit. Je ne propose le remplacement que s’il tient.</p>
-          <p>Chaque solution a son devis, avec une priorité. Prix fixe, annoncé avant de commencer.</p>
-          <p>Une formation de l’équipe n’est pas une des trois offres. Si le rapport montre qu’il faut d’abord apprendre quoi confier à un outil, et quoi ne jamais y mettre, je la propose alors, sur vos tâches, en français.</p>
-        </div>
-      </article>
-      <article class="format">
-        <h3>Le suivi</h3>
-        <div>
-          <p>Après la livraison : la maintenance, les petites améliorations, et une réponse quand quelque chose bloque. On en décide une fois la première chose en place. Rien ne s’ajoute sans votre accord.</p>
-        </div>
-      </article>
-    </div>
-    <p class="formats-note">Prix fixe, annoncé avant de commencer. En français. Aucun montant sur cette page.</p>
-  </section>
-
-  <section class="confid wrap" id="donnees">
-    <div class="confid-panel">
-      <h2>Ce qu’on ne met pas dans un outil</h2>
-      <p>Données de clients, salaires, contrats, dossiers. L’audit sépare ce qui peut passer par un outil et ce qui reste chez vous. C’est le cadre de la loi suisse sur la protection des données (nLPD).</p>
-    </div>
-  </section>
-
-  <section class="tools wrap" id="preuve">
-    <h2>Avant, après</h2>
-    <p class="tools-intro">À gauche, le vieux logiciel qui ne répond plus. À droite, l’outil propre : le rendez-vous se prend, le client s’y retrouve. Vous comparez vous-même.</p>
-
-    <div class="cmp" style="--pos: 40%">
-      <div class="cmp-caption" aria-hidden="true">
-        <span>Avant</span>
-        <span>Après</span>
+        <p class="fact enter-piece" style="--i:2">Je réponds sous 24 heures.</p>
       </div>
-      <div class="cmp-frame">
-        <div class="cmp-stage" aria-hidden="true">
+      <figure class="hero-visual">
+        <img src="paco-portrait.jpg" width="648" height="648" alt="Paco-Anders Rivas" fetchpriority="high" decoding="async">
+      </figure>
+    </div>
+  </section>
 
-          <div class="layer layer-before">
-            <div class="w7">
-              <div class="w7-title">
-                <span class="w7-title-icon"></span>
-                <span class="w7-title-text">Agenda 2.1 (Ne répond pas)</span>
-                <span class="w7-ctrls">
-                  <span class="w7-ctrl">&#8210;</span><span class="w7-ctrl">&#9633;</span><span class="w7-ctrl w7-close">&#10005;</span>
-                </span>
-              </div>
-              <div class="w7-menu">
-                <span><u>F</u>ichier</span><span><u>É</u>dition</span><span><u>A</u>ffichage</span><span><u>O</u>utils</span><span>?</span>
-              </div>
-              <div class="w7-toolbar">
-                <span class="w7-tool t1"></span><span class="w7-tool t2"></span><span class="w7-tool t3"></span>
-                <span class="w7-sep"></span>
-                <span class="w7-tool t4"></span><span class="w7-tool t5"></span><span class="w7-tool t6"></span>
-                <span class="w7-sep"></span>
-                <span class="w7-tool t7"></span><span class="w7-tool t8"></span>
-              </div>
-              <div class="w7-grid">
-                <table>
-                  <thead>
-                    <tr><th>Heure</th><th>Client</th><th>Prestation</th><th>État</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>08:30</td><td>Camille</td><td>Coupe</td><td>—</td></tr>
-                    <tr><td>09:15</td><td>Inès</td><td>Massage</td><td>—</td></tr>
-                    <tr><td>10:00</td><td>—</td><td>—</td><td>—</td></tr>
-                    <tr><td>10:45</td><td>Jonas</td><td>Couleur</td><td>—</td></tr>
-                    <tr><td>11:30</td><td>Léa</td><td>Soin</td><td>—</td></tr>
-                    <tr><td>14:00</td><td>Marc</td><td>Massage</td><td>—</td></tr>
-                    <tr><td>14:45</td><td>—</td><td>—</td><td>—</td></tr>
-                    <tr><td>15:30</td><td>Nora</td><td>Coupe</td><td>—</td></tr>
-                    <tr><td>16:15</td><td>Simon</td><td>Soin</td><td>—</td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="w7-status">
-                <span>Ne répond pas</span>
-                <span></span>
-              </div>
-              <div class="w7-hang"></div>
-            </div>
+  <section class="section section-surface" id="offres" style="--h: 1">
+    <div class="wrap">
+      <h2>Les deux offres</h2>
+      <p class="lede">Vous prenez l’une, l’autre, ou les deux. Le périmètre est fixé avant que je commence.</p>
+      <div class="offers">
+        <article class="reveal" id="site" style="--d:0ms">
+          <h3>Tenir le site et les réseaux</h3>
+          <p>Une page qui dit le métier, à qui il s’adresse, et comment on vous joint. J’écris les publications et je réponds aux messages, dans la voix du site.</p>
+          <p class="offer-foot">
+            <span class="offer-kicker">Annoncé avant d’écrire</span>
+            <span class="offer-price">Sur devis</span>
+          </p>
+        </article>
+        <article class="reveal" id="ia" style="--d:120ms">
+          <h3>Tenir l’IA sur vos données</h3>
+          <p>Documents, échanges, procédures&#8239;: tout reste dans l’entreprise. Je règle l’IA sur ce qui est déjà là, et je la tiens.</p>
+          <p class="offer-foot">
+            <span class="offer-kicker">Rien ne s’y ajoute</span>
+            <span class="offer-price">Abonnement mensuel</span>
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
 
-            <div class="w7-dialog">
-              <div class="w7-dialog-title">
-                <span>Agenda 2.1</span>
-                <span class="w7-ctrl w7-close">&#10005;</span>
-              </div>
-              <div class="w7-dialog-body">
-                <span class="w7-err-icon" aria-hidden="true"></span>
-                <p>Les rendez-vous du jour ne s’ouvrent pas.</p>
-              </div>
-              <div class="w7-dialog-foot">
-                <span class="w7-btn">OK</span>
-              </div>
-            </div>
+  <section class="section" id="page" style="--h: 1">
+    <div class="wrap page-grid">
+      <div class="page-copy">
+        <h2>Le site se tient</h2>
+        <p class="lede">Le nom, le métier, puis la façon d’écrire. La page se monte dans cet ordre.</p>
+      </div>
+      <figure class="mock" data-build aria-hidden="true">
+        <div class="mock-bar build" data-step="1"><span class="mock-mark"></span><span>Page</span></div>
+        <p class="mock-title build" data-step="2">Le métier, en clair</p>
+        <div class="mock-lines build" data-step="3"><span></span><span></span><span></span></div>
+        <p class="mock-cta build" data-step="4">Écrire</p>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="donnees" style="--h: 1">
+    <div class="wrap">
+      <h2>Les données restent dans l’entreprise</h2>
+      <p class="statement" data-moment="word-highlight">
+        <span class="w">Pas</span>
+        <span class="w">un</span>
+        <span class="w">tableau</span>
+        <span class="w">de</span>
+        <span class="w">bord</span>
+        <span class="w">sorti</span>
+        <span class="w">d’un</span>
+        <span class="w">catalogue.</span>
+        <span class="w">Une</span>
+        <span class="w">IA</span>
+        <span class="w">réglée</span>
+        <span class="w">sur</span>
+        <span class="w">vos</span>
+        <span class="w w-strong">données,</span>
+        <span class="w">et</span>
+        <span class="w">tenue</span>
+        <span class="w">au</span>
+        <span class="w">mois.</span>
+      </p>
+      <div class="seq" data-seq aria-hidden="true">
+        <div class="vault">
+          <p class="vault-name">Dans l’entreprise</p>
+          <div class="docs">
+            <span class="doc" style="--sx:16px;--sy:-12px"></span>
+            <span class="doc" style="--sx:-20px;--sy:6px"></span>
+            <span class="doc" style="--sx:12px;--sy:14px"></span>
+            <span class="doc" style="--sx:-10px;--sy:-8px"></span>
           </div>
-
-          <div class="layer layer-after">
-            <div class="app">
-              <div class="app-panel">
-              <div class="app-head">
-                <div class="app-brand">EdelMark Agenda</div>
-                <div class="app-search">
-                  <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-                  <span>Rechercher un rendez-vous…</span>
-                </div>
-              </div>
-              <p class="app-states">Confirmé · À rappeler · Libre</p>
-              <table class="app-table">
-                <thead>
-                  <tr><th>Heure</th><th>Client</th><th>Prestation</th><th>État</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td>08:30</td><td>Camille</td><td>Coupe</td><td>Confirmé</td></tr>
-                  <tr><td>09:15</td><td>Inès</td><td>Massage</td><td>Confirmé</td></tr>
-                  <tr><td>10:00</td><td>—</td><td>—</td><td class="is-libre">Libre</td></tr>
-                  <tr><td>10:45</td><td>Jonas</td><td>Couleur</td><td>À rappeler</td></tr>
-                  <tr><td>11:30</td><td>Léa</td><td>Soin</td><td>Confirmé</td></tr>
-                  <tr><td>14:00</td><td>Marc</td><td>Massage</td><td>À rappeler</td></tr>
-                  <tr><td>14:45</td><td>—</td><td>—</td><td class="is-libre">Libre</td></tr>
-                  <tr><td>15:30</td><td>Nora</td><td>Coupe</td><td>Confirmé</td></tr>
-                  <tr><td>16:15</td><td>Simon</td><td>Soin</td><td>Confirmé</td></tr>
-                </tbody>
-              </table>
-              </div>
-            </div>
+        </div>
+        <div class="saas">
+          <div class="tiles">
+            <span class="tile"></span>
+            <span class="tile"></span>
+            <span class="tile"></span>
           </div>
-
-        </div>
-
-        <input class="cmp-range" type="range" min="0" max="100" step="1" value="40"
-               aria-label="Comparer l’ancien et le nouveau logiciel"
-               aria-valuetext="Outil propre visible à 60 %">
-        <div class="cmp-handle" aria-hidden="true">
-          <span class="cmp-knob">
-            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
+          <p class="answer">Le fonds reste ici.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="method wrap" id="deroule">
-    <h2>Comment ça se passe</h2>
-    <ol class="steps">
-      <li>
-        <span class="step-n" aria-hidden="true">1</span>
-        <h3>Vous écrivez.</h3>
-        <p>Deux lignes : votre commerce, et ce qui vous prend du temps.</p>
-      </li>
-      <li>
-        <span class="step-n" aria-hidden="true">2</span>
-        <h3>L’audit.</h3>
-        <p>Je viens sur place. Le prix est fixé avant. Vous recevez le rapport et, si vous continuez, un devis par solution. Vous pouvez vous arrêter là.</p>
-      </li>
-      <li>
-        <span class="step-n" aria-hidden="true">3</span>
-        <h3>La livraison.</h3>
-        <p>Le site ou l’outil prioritaire, à prix fixe. Le suivi vient ensuite, si vous le voulez.</p>
-      </li>
-    </ol>
-  </section>
-
-  <section class="bio wrap" id="paco">
-    <img class="bio-photo" src="paco-portrait.jpg" width="648" height="648" alt="Paco-Anders Rivas">
-    <div class="bio-text">
-      <h2>Paco-Anders Rivas</h2>
-      <p>Informaticien, neuf ans en systèmes et réseaux, dont trois ans à accompagner des équipes sur leurs outils numériques. Je regarde l’installation, puis je construis le site ou l’outil. EdelMark s’adresse aux PME de Suisse romande, d’abord dans le canton de Vaud.</p>
-    </div>
-  </section>
-
-  <section class="contact wrap" id="contact">
-    <div class="contact-panel">
-      <h2>Parlons de votre commerce.</h2>
-      <p>Dites-moi en deux lignes ce que vous faites et ce qui coince — le site, les rendez-vous, un logiciel. Je réponds sous <span class="num">24</span> heures.</p>
-      <div class="actions">
-        <a class="btn btn-primary" href="mailto:contact@edelmark.ch?subject=Audit%20%E2%80%94%20mon%20commerce">Écrire un e-mail</a>
-        <a class="btn btn-text wa-link" href="#" target="_blank" rel="noopener" hidden>WhatsApp</a>
-      </div>
-      <p class="contact-alt"><a href="mailto:contact@edelmark.ch?subject=Audit%20%E2%80%94%20mon%20commerce">contact@edelmark.ch</a></p>
+  <section class="section" id="methode" style="--h: 1">
+    <div class="wrap">
+      <h2>Trois temps</h2>
+      <ol class="steps">
+        <li class="reveal" style="--d:0ms">
+          <span class="step-n" aria-hidden="true">1</span>
+          <h3>Vous écrivez</h3>
+          <p>Deux lignes&#8239;: l’entreprise, et ce que le site ou les réseaux ne font pas aujourd’hui.</p>
+        </li>
+        <li class="reveal" style="--d:90ms">
+          <span class="step-n" aria-hidden="true">2</span>
+          <h3>Je livre le site</h3>
+          <p>Le devis est accepté avant. Les réseaux prennent ensuite la même voix.</p>
+        </li>
+        <li class="reveal" style="--d:180ms">
+          <span class="step-n" aria-hidden="true">3</span>
+          <h3>Je tiens l’IA</h3>
+          <p>Seulement si vous prenez l’abonnement. Vous pouvez vous arrêter au site.</p>
+        </li>
+      </ol>
+      <p class="bio" id="paco">Paco-Anders Rivas. Neuf ans en systèmes et réseaux, dont trois à accompagner des équipes sur leurs outils.</p>
     </div>
   </section>
 
 </main>
 
-<footer class="site-footer wrap">
-  <p class="footer-line">
-    <span class="footer-brand">EdelMark</span>
-    <span class="sep" aria-hidden="true">·</span>
-    <span>Paco-Anders Rivas</span>
-    <span class="sep" aria-hidden="true">·</span>
-    <span>Canton de Vaud</span>
-    <span class="sep" aria-hidden="true">·</span>
-    <a href="mailto:contact@edelmark.ch?subject=Audit%20%E2%80%94%20mon%20commerce">contact@edelmark.ch</a>
-  </p>
-  <p class="footer-note">Ce site n’utilise ni cookies ni outil de suivi.</p>
+<footer class="closing" id="ecrire">
+  <div class="wrap closing-grid">
+    <div class="close">
+      <h2>Écrire à EdelMark</h2>
+      <p>Dites l’entreprise et l’offre qui vous intéresse. Je réponds sous 24 heures.</p>
+      <a class="btn btn-primary btn-xl" href="mailto:contact@edelmark.ch?subject=Devis%20%E2%80%94%20EdelMark">Demander un devis</a>
+      <p class="close-mail"><a href="mailto:contact@edelmark.ch?subject=Devis%20%E2%80%94%20EdelMark">contact@edelmark.ch</a></p>
+    </div>
+    <div class="foot">
+      <div class="foot-cols">
+        <div>
+          <p class="foot-label">Offres</p>
+          <a href="#site">Le site et les réseaux</a>
+          <a href="#ia">L’IA sur vos données</a>
+        </div>
+        <div>
+          <p class="foot-label">Parcours</p>
+          <a href="#page">Le site se tient</a>
+          <a href="#methode">Trois temps</a>
+          <a href="#donnees">Les données</a>
+          <a href="#paco">Paco-Anders Rivas</a>
+        </div>
+        <div>
+          <p class="foot-label">Maison</p>
+          <p>Canton de Vaud</p>
+          <a href="mailto:contact@edelmark.ch?subject=Devis%20%E2%80%94%20EdelMark">contact@edelmark.ch</a>
+        </div>
+      </div>
+      <p class="legal">EdelMark, 2026. Ce site n’utilise ni cookies ni outil de suivi.</p>
+    </div>
+  </div>
 </footer>
 
 <script src="main.js"></script>
