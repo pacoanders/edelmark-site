@@ -15,6 +15,7 @@
   <meta property="og:locale" content="fr_CH">
   <meta property="og:url" content="https://edelmark.ch/">
   <meta property="og:image" content="https://edelmark.ch/paco-portrait.jpg">
+  <script>document.documentElement.classList.add("js");if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("motion");</script>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preload" href="fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
@@ -57,6 +58,7 @@
           </div>
         </div>
       </div>
+      <a href="#page">Site</a>
       <a href="#methode">Méthode</a>
       <a href="#donnees">Données</a>
       <a href="#paco">Paco</a>
@@ -73,6 +75,7 @@
   <div class="menu" id="menu" hidden>
     <div class="wrap menu-inner">
       <a href="#offres">Offres</a>
+      <a href="#page">Site</a>
       <a href="#methode">Méthode</a>
       <a href="#donnees">Données</a>
       <a href="#paco">Paco</a>
@@ -87,13 +90,16 @@
     <div class="wrap hero-grid">
       <div class="hero-text">
         <p class="notice">Sur devis pour le site. Abonnement mensuel pour l’IA.</p>
-        <h1>Sites, réseaux et IA<br>pour le canton de Vaud</h1>
-        <p class="lead">Je tiens le site et les réseaux. L’IA travaille sur vos données, qui restent les vôtres.</p>
-        <div class="actions">
+        <h1>
+          <span class="line"><span class="line-in">Sites, réseaux et IA</span></span>
+          <span class="line"><span class="line-in">pour le canton de Vaud</span></span>
+        </h1>
+        <p class="lead enter-piece" style="--i:0">Je tiens le site et les réseaux. L’IA travaille sur vos données, qui restent les vôtres.</p>
+        <div class="actions enter-piece" style="--i:1">
           <a class="btn btn-primary" href="mailto:contact@edelmark.ch?subject=Devis%20%E2%80%94%20EdelMark">Demander un devis</a>
           <a class="btn btn-secondary" href="#offres">Voir les offres</a>
         </div>
-        <p class="fact">Je réponds sous 24 heures.</p>
+        <p class="fact enter-piece" style="--i:2">Je réponds sous 24 heures.</p>
       </div>
       <figure class="hero-visual">
         <img src="paco-portrait.jpg" width="648" height="648" alt="Paco-Anders Rivas" fetchpriority="high" decoding="async">
@@ -106,7 +112,7 @@
       <h2>Les deux offres</h2>
       <p class="lede">Vous prenez l’une, l’autre, ou les deux. Le périmètre est fixé avant que je commence.</p>
       <div class="offers">
-        <article id="site">
+        <article class="reveal" id="site" style="--d:0ms">
           <h3>Tenir le site et les réseaux</h3>
           <p>Une page qui dit le métier, à qui il s’adresse, et comment on vous joint. J’écris les publications et je réponds aux messages, dans la voix du site.</p>
           <p class="offer-foot">
@@ -114,7 +120,7 @@
             <span class="offer-price">Sur devis</span>
           </p>
         </article>
-        <article id="ia">
+        <article class="reveal" id="ia" style="--d:120ms">
           <h3>Tenir l’IA sur vos données</h3>
           <p>Documents, échanges, procédures&#8239;: tout reste dans l’entreprise. Je règle l’IA sur ce qui est déjà là, et je la tiens.</p>
           <p class="offer-foot">
@@ -123,6 +129,21 @@
           </p>
         </article>
       </div>
+    </div>
+  </section>
+
+  <section class="section" id="page" style="--h: 1">
+    <div class="wrap page-grid">
+      <div class="page-copy">
+        <h2>Le site se tient</h2>
+        <p class="lede">Le nom, le métier, puis la façon d’écrire. La page se monte dans cet ordre.</p>
+      </div>
+      <figure class="mock" data-build aria-hidden="true">
+        <div class="mock-bar build" data-step="1"><span class="mock-mark"></span><span>Page</span></div>
+        <p class="mock-title build" data-step="2">Le métier, en clair</p>
+        <div class="mock-lines build" data-step="3"><span></span><span></span><span></span></div>
+        <p class="mock-cta build" data-step="4">Écrire</p>
+      </figure>
     </div>
   </section>
 
@@ -149,6 +170,25 @@
         <span class="w">au</span>
         <span class="w">mois.</span>
       </p>
+      <div class="seq" data-seq aria-hidden="true">
+        <div class="vault">
+          <p class="vault-name">Dans l’entreprise</p>
+          <div class="docs">
+            <span class="doc" style="--sx:16px;--sy:-12px"></span>
+            <span class="doc" style="--sx:-20px;--sy:6px"></span>
+            <span class="doc" style="--sx:12px;--sy:14px"></span>
+            <span class="doc" style="--sx:-10px;--sy:-8px"></span>
+          </div>
+        </div>
+        <div class="saas">
+          <div class="tiles">
+            <span class="tile"></span>
+            <span class="tile"></span>
+            <span class="tile"></span>
+          </div>
+          <p class="answer">Le fonds reste ici.</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -156,17 +196,17 @@
     <div class="wrap">
       <h2>Trois temps</h2>
       <ol class="steps">
-        <li>
+        <li class="reveal" style="--d:0ms">
           <span class="step-n" aria-hidden="true">1</span>
           <h3>Vous écrivez</h3>
           <p>Deux lignes&#8239;: l’entreprise, et ce que le site ou les réseaux ne font pas aujourd’hui.</p>
         </li>
-        <li>
+        <li class="reveal" style="--d:90ms">
           <span class="step-n" aria-hidden="true">2</span>
           <h3>Je livre le site</h3>
           <p>Le devis est accepté avant. Les réseaux prennent ensuite la même voix.</p>
         </li>
-        <li>
+        <li class="reveal" style="--d:180ms">
           <span class="step-n" aria-hidden="true">3</span>
           <h3>Je tiens l’IA</h3>
           <p>Seulement si vous prenez l’abonnement. Vous pouvez vous arrêter au site.</p>
@@ -195,6 +235,7 @@
         </div>
         <div>
           <p class="foot-label">Parcours</p>
+          <a href="#page">Le site se tient</a>
           <a href="#methode">Trois temps</a>
           <a href="#donnees">Les données</a>
           <a href="#paco">Paco-Anders Rivas</a>

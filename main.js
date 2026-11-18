@@ -123,4 +123,64 @@
     window.addEventListener("resize", onScroll);
     paint();
   }
+
+  var reduce = motion.matches;
+  if (!reduce && "IntersectionObserver" in window) {
+    var seen = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        en.target.classList.add("is-in");
+        seen.unobserve(en.target);
+      });
+    }, { threshold: 0.3, rootMargin: "0px 0px -8% 0px" });
+    document.querySelectorAll(".reveal").forEach(function (el) { seen.observe(el); });
+  } else {
+    document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("is-in"); });
+  }
+
+  var mock = document.querySelector("[data-build]");
+  var seq = document.querySelector("[data-seq]");
+  var parts = mock ? mock.querySelectorAll(".build") : [];
+  var mockLocked = false;
+  var seqLocked = false;
+
+  function arrive(el) {
+    var top = el.getBoundingClientRect().top;
+    var start = window.innerHeight * 0.92;
+    var end = window.innerHeight * 0.4;
+    var span = start - end;
+    var t = (start - top) / span;
+    if (t < 0) return 0;
+    if (t > 1) return 1;
+    return t;
+  }
+
+  function paintStages() {
+    if (mock) {
+      var t = (!reduce && !mockLocked) ? arrive(mock) : 1;
+      if (t >= 1) mockLocked = true;
+      for (var i = 0; i < parts.length; i++) {
+        parts[i].classList.toggle("is-on", t + 0.02 >= (i + 1) / parts.length);
+      }
+    }
+    if (seq) {
+      var s = (!reduce && !seqLocked) ? arrive(seq) : 1;
+      if (s >= 1) seqLocked = true;
+      seq.style.setProperty("--t", s.toFixed(3));
+    }
+  }
+
+  if (!reduce) {
+    var queued = false;
+    window.addEventListener("scroll", function () {
+      if (queued) return;
+      queued = true;
+      window.requestAnimationFrame(function () {
+        queued = false;
+        paintStages();
+      });
+    }, { passive: true });
+    window.addEventListener("resize", paintStages);
+  }
+  paintStages();
 })();
