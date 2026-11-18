@@ -1,51 +1,126 @@
-/* EdelMark — lien WhatsApp
-   Le numéro n'apparaît jamais en clair dans la page : il est stocké à l'envers
-   et le lien n'est assemblé qu'au chargement, pour décourager les robots
-   qui ramassent les numéros. Format : indicatif sans +, sans espaces, inversé.
-   Vide = lien masqué. */
-(function () {
-  "use strict";
-  var WA_CODE = "78314078714";
-  var MESSAGE = "Bonjour, j\u2019aimerais un audit pour mon commerce\u202f: ";
-
-  var link = document.querySelector(".wa-link");
-  if (!link || !/^\d{9,15}$/.test(WA_CODE)) return;
-  var num = WA_CODE.split("").reverse().join("");
-  link.href = "https://wa.me/" + num + "?text=" + encodeURIComponent(MESSAGE);
-  link.hidden = false;
-})();
-
-/* EdelMark — comparateur. Le visiteur déplace le trait, rien ne joue seul. */
+/* EdelMark — menu, panneau des offres, phrase qui s’écrit au défilement. */
 (function () {
   "use strict";
 
-  var cmp = document.querySelector(".cmp");
-  if (!cmp) return;
+  var menuBtn = document.querySelector(".menu-btn");
+  var menu = document.getElementById("menu");
+  var drop = document.querySelector(".nav-drop");
+  var panel = document.getElementById("offres-panel");
+  var statement = document.querySelector(".statement");
+  var desktop = window.matchMedia("(min-width: 960px)");
+  var motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var openTimer = 0;
+  var closeTimer = 0;
 
-  var frame = cmp.querySelector(".cmp-frame");
-  var range = cmp.querySelector(".cmp-range");
-
-  function fit() {
-    cmp.style.setProperty("--scale", frame.clientWidth / 1000);
-  }
-  fit();
-  if ("ResizeObserver" in window) {
-    new ResizeObserver(fit).observe(frame);
-  } else {
-    window.addEventListener("resize", fit);
-  }
-
-  function setPos(v) {
-    var n = Math.min(100, Math.max(0, Number(v)));
-    cmp.style.setProperty("--pos", n + "%");
-    range.value = String(Math.round(n));
-    range.setAttribute("aria-valuetext",
-      "Outil propre visible à " + Math.round(100 - n) + " %");
+  function setMenu(open) {
+    if (!menuBtn || !menu) return;
+    menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    menu.hidden = !open;
+    document.body.classList.toggle("menu-open", open);
+    var label = menuBtn.querySelector(".visually-hidden");
+    if (label) label.textContent = open ? "Fermer" : "Menu";
   }
 
-  range.addEventListener("input", function () {
-    setPos(range.value);
+  function setMega(open) {
+    if (!drop || !panel || !desktop.matches) {
+      if (panel) panel.hidden = true;
+      document.documentElement.classList.remove("mega-open");
+      return;
+    }
+    drop.setAttribute("aria-expanded", open ? "true" : "false");
+    panel.hidden = !open;
+    if (open) {
+      document.documentElement.style.setProperty("--mega", panel.offsetHeight + "px");
+      document.documentElement.classList.add("mega-open");
+    } else {
+      document.documentElement.classList.remove("mega-open");
+    }
+  }
+
+  function scheduleMega(open) {
+    window.clearTimeout(openTimer);
+    window.clearTimeout(closeTimer);
+    if (open) openTimer = window.setTimeout(function () { setMega(true); }, 150);
+    else closeTimer = window.setTimeout(function () { setMega(false); }, 120);
+  }
+
+  if (menuBtn && menu) {
+    menuBtn.addEventListener("click", function () {
+      setMenu(menu.hidden);
+    });
+    menu.addEventListener("click", function (event) {
+      if (event.target.closest("a")) setMenu(false);
+    });
+  }
+
+  if (drop && panel) {
+    drop.addEventListener("click", function () {
+      if (!desktop.matches) return;
+      window.clearTimeout(openTimer);
+      window.clearTimeout(closeTimer);
+      setMega(panel.hidden);
+    });
+    drop.addEventListener("mouseenter", function () { scheduleMega(true); });
+    drop.addEventListener("mouseleave", function () { scheduleMega(false); });
+    drop.addEventListener("focus", function () { setMega(true); });
+    panel.addEventListener("mouseenter", function () {
+      window.clearTimeout(closeTimer);
+      window.clearTimeout(openTimer);
+    });
+    panel.addEventListener("mouseleave", function () { scheduleMega(false); });
+    panel.addEventListener("click", function (event) {
+      if (event.target.closest("a")) setMega(false);
+    });
+    var zone = document.querySelector(".nav-offres");
+    zone.addEventListener("focusout", function (event) {
+      if (!zone.contains(event.relatedTarget)) setMega(false);
+    });
+  }
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Escape") return;
+    setMenu(false);
+    setMega(false);
   });
 
-  setPos(range.value);
+  document.addEventListener("click", function (event) {
+    if (!panel || panel.hidden) return;
+    if (event.target.closest(".nav-offres") || event.target.closest(".mega")) return;
+    setMega(false);
+  });
+
+  window.addEventListener("resize", function () {
+    if (desktop.matches) setMenu(false);
+    else setMega(false);
+  });
+
+  if (statement && !motion.matches) {
+    var words = statement.querySelectorAll(".w");
+    statement.classList.add("is-live");
+
+    function paint() {
+      var rect = statement.getBoundingClientRect();
+      var start = window.innerHeight * 0.72;
+      var travel = Math.max(rect.height, 1);
+      var passed = start - rect.top;
+      var progress = Math.min(1, Math.max(0, passed / travel));
+      var cut = progress * words.length;
+      for (var i = 0; i < words.length; i++) {
+        words[i].classList.toggle("is-on", i < cut);
+      }
+    }
+
+    var ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () {
+        paint();
+        ticking = false;
+      });
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    paint();
+  }
 })();
