@@ -1,256 +1,791 @@
-<!doctype html>
-<html lang="fr" data-type="service" data-radius="soft" data-buttons="block" data-motion="reduced-ready">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>EdelMark — Sites, réseaux et IA, canton de Vaud</title>
-  <meta name="description" content="EdelMark, canton de Vaud. Paco-Anders Rivas tient le site et les réseaux, sur devis, et une IA sur les données de l’entreprise, en abonnement mensuel.">
-  <meta name="page-type" content="service">
-  <meta name="site-kind" content="other">
-  <meta name="theme-color" content="#e8e8e3">
-  <meta name="color-scheme" content="light">
-  <meta property="og:title" content="EdelMark — Sites, réseaux et IA, canton de Vaud">
-  <meta property="og:description" content="Le site et les réseaux, sur devis. L’IA sur les données de l’entreprise, en abonnement mensuel. Canton de Vaud.">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="fr_CH">
-  <meta property="og:url" content="https://edelmark.ch/">
-  <meta property="og:image" content="https://edelmark.ch/paco-portrait.jpg">
-  <script>document.documentElement.classList.add("js");if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("motion");</script>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EDELMARK</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{height:100%}
+
+  :root{
+    --dw:clamp(340px,40vw,620px);
+    --hh:clamp(72px,9vh,96px);
+    --peek:clamp(64px,6.4vw,110px);
+    --ease:cubic-bezier(.22,.8,.2,1);
+    --ink:#111111;
+    --black:#0E0E0E;
+    --blue:#86d1f8;
+    --blue-hover:#7bc0e4;
+    --muted:#8A8A8A;
+  }
+
+  body{
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);
+    background:var(--black);
+    height:100vh;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ================= Fond : placeholder photo en dégradé gris ================= */
+  .bg{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    background:
+      radial-gradient(60% 55% at 72% 35%,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 70%),
+      radial-gradient(55% 60% at 30% 85%,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 70%),
+      linear-gradient(120deg,#8c8c8c 0%,#4a4a4a 45%,#161616 100%);
+  }
+  .bg::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:.18;
+    mix-blend-mode:overlay;
+  }
+
+  /* ================= Barre noire (toujours visible) ================= */
+  .topbar{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:4;
+    width:var(--dw);
+    height:var(--hh);
+    background:var(--black);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 clamp(24px,2.6vw,40px);
+  }
+  .brand{
+    color:#fff;
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size:clamp(20px,2.1vw,34px);
+    letter-spacing:.01em;
+    line-height:1;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+
+  .toggle{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:none;
+    border:0;
+    color:#fff;
+    cursor:pointer;
+    font:inherit;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    padding:8px 4px;
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .ico{position:relative;display:block;width:24px;height:14px}
+  .ico i{
+    position:absolute;
+    left:0;
+    height:2px;
+    background:#fff;
+    transition:transform .45s var(--ease),top .45s var(--ease),bottom .45s var(--ease),width .45s var(--ease);
+  }
+  .ico i:first-child{top:2px;width:16px}
+  .ico i:last-child{bottom:2px;width:24px}
+  .drawer-open .ico i:first-child{top:6px;width:24px;transform:rotate(45deg)}
+  .drawer-open .ico i:last-child{top:6px;bottom:auto;width:24px;transform:rotate(-45deg)}
+
+  /* ================= Tiroir blanc : glisse de gauche à droite ================= */
+  .drawer{
+    position:fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    width:var(--dw);
+    z-index:3;
+    background:#fff;
+    overflow:hidden;
+    transform:translateX(-101%);
+    visibility:hidden;
+    /* À la fermeture : les languettes rentrent d'abord, puis le tiroir sort */
+    transition:transform .8s var(--ease) .45s, visibility 0s linear 1.25s;
+  }
+  .drawer-open .drawer{
+    transform:translateX(0);
+    visibility:visible;
+    transition:transform .9s var(--ease) 0s, visibility 0s;
+  }
+
+  /* Vue d'accueil : titre */
+  .dbody{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    padding:calc(var(--hh) + clamp(28px,6vh,64px)) clamp(24px,2.8vw,40px) clamp(28px,4.5vh,48px);
+  }
+  .dbody > *{
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .25s ease,transform .25s ease;
+  }
+  .drawer-open .dbody > *{
+    opacity:1;
+    transform:none;
+    transition:opacity .7s ease,transform .8s var(--ease);
+  }
+  .drawer-open .dbody > :nth-child(1){transition-delay:.45s}
+  .drawer-open .dbody > :nth-child(2){transition-delay:.55s}
+
+  .kicker{
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    padding-bottom:14px;
+    border-bottom:1px solid #e2e2e2;
+  }
+  .headline{
+    margin:auto 0;
+    font-family:"Arial Black","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight:900;
+    text-transform:uppercase;
+    font-size:clamp(22px,2.5vw,44px);
+    line-height:1.3;
+    letter-spacing:-.02em;
+    color:var(--ink);
+  }
+  .headline .ln{display:block;margin-bottom:.26em}
+  .headline .ln:last-child{margin-bottom:0}
+  .hl{
+    background:var(--black);
+    color:var(--blue);
+    padding:.02em .14em;
+    -webkit-box-decoration-break:clone;
+    box-decoration-break:clone;
+  }
+
+  /* Vue d'une languette sélectionnée (ordinateur) : rectangle bleu arrondi dans le tiroir */
+  .view-info{
+    position:absolute;
+    inset:0;
+    display:none;
+    padding:calc(var(--hh) + 22px) 22px 22px;
+  }
+  .is-info .view-info{
+    display:block;
+    animation:infoIn .6s var(--ease) both;
+  }
+  .is-info .dbody{display:none}
+  @keyframes infoIn{
+    from{opacity:0;transform:translateY(14px)}
+    to{opacity:1;transform:none}
+  }
+
+  .card-info{
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    background:var(--blue);
+    color:var(--ink);
+    border-radius:28px;
+    padding:clamp(22px,3vh,32px) clamp(22px,2.4vw,36px);
+    overflow-y:auto;
+  }
+  .ci-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .ci-back{
+    background:var(--black);
+    color:#fff;
+    border:0;
+    border-radius:0;
+    padding:10px 18px;
+    font:inherit;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    cursor:pointer;
+    clip-path:polygon(0 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%);
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .ci-num{font-size:13px;font-weight:600;letter-spacing:.04em}
+  .ci-title{
+    margin-top:clamp(28px,6vh,64px);
+    font-size:clamp(28px,3.1vw,50px);
+    font-weight:600;
+    letter-spacing:-.025em;
+    line-height:1.06;
+  }
+  .ci-desc{
+    margin-top:14px;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.04em;
+    line-height:1.4;
+    text-transform:uppercase;
+  }
+  .ci-body{margin-top:clamp(20px,4vh,36px)}
+  .ci-body p{font-size:clamp(15px,1.15vw,17px);line-height:1.6;max-width:44ch}
+  .ci-body p + p{margin-top:12px}
+  .ci-body ul{list-style:none;display:grid;gap:10px;margin-top:18px}
+  .ci-body li{
+    padding:14px 18px;
+    border-radius:16px;
+    background:rgba(255,255,255,.5);
+    font-size:15px;
+  }
+
+  /* Page bleue (mobile) : tirée par la languette touchée, hors écran à gauche au repos */
+  .page{display:none}
+
+  /* ================= Languettes bleues ================= */
+  .tabs-desk{
+    position:fixed;
+    left:0;
+    bottom:0;
+    width:calc(var(--dw) * 2);
+    z-index:2;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    pointer-events:none;
+  }
+  .tabs-mob{display:none}
+
+  .tab{
+    --x:0px;                                  /* position au repos : collée au tiroir */
+    --d:calc(.95s + var(--i) * .18s);         /* délai de sortie, une par une */
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    margin:0 0 0 var(--dw);
+    width:var(--dw);
+    min-height:clamp(130px,19vh,210px);
+    padding:clamp(16px,2.4vh,28px) clamp(22px,2.6vw,38px);
+    border:0;
+    border-radius:0;
+    font:inherit;
+    color:var(--ink);
+    text-align:left;
+    background:var(--blue);
+    -webkit-appearance:none;
+    appearance:none;
+    cursor:pointer;
+    pointer-events:auto;
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+    clip-path:polygon(0 0,100% 0,100% calc(100% - 22px),calc(100% - 22px) 100%,0 100%);
+    /* caché sous le tiroir tant qu'il n'est pas sorti */
+    transform:translateX(calc(-1 * var(--dw) - 60px));
+    visibility:hidden;
+    transition:transform .5s var(--ease), visibility 0s linear .55s;
+  }
+  .drawer-open .tab{
+    transform:translateX(var(--x));
+    visibility:visible;
+    transition:transform .7s var(--ease), visibility 0s;
+  }
+  /* Sortie une par une, uniquement à l'ouverture initiale */
+  .drawer-open:not(.settled) .tab{transition-delay:var(--d)}
+
+  /* Ordinateur : la languette sélectionnée glisse sous le tiroir et laisse dépasser
+     seulement un bout avec la flèche */
+  .tab.is-active{--x:calc(var(--peek) - var(--dw))}
+
+  @media (hover:hover){
+    .tab:hover{filter:brightness(.97)}
+    .tab:hover .chev{transform:translate(5px,-50%)}
+  }
+
+  .prog{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.04em;
+  }
+  .bar{position:relative;flex:1;height:2px;background:rgba(0,0,0,.22)}
+  .bar i{position:absolute;left:0;top:0;height:2px;background:var(--ink)}
+
+  .tbody{display:block;padding-right:48px}
+  .ttl{
+    display:block;
+    font-size:clamp(20px,min(2.4vw,4.2vh),40px);
+    font-weight:500;
+    line-height:1.06;
+    letter-spacing:-.015em;
+    color:var(--ink);
+  }
+  .tdesc{
+    display:block;
+    margin-top:clamp(8px,1.2vh,14px);
+    font-size:clamp(10.5px,.8vw,12.5px);
+    font-weight:500;
+    letter-spacing:.02em;
+    line-height:1.35;
+    text-transform:uppercase;
+    max-width:44ch;
+  }
+  .chev{
+    position:absolute;
+    top:50%;
+    right:clamp(22px,2.6vw,38px);
+    width:clamp(22px,2vw,30px);
+    height:clamp(22px,2vw,30px);
+    transform:translateY(-50%);
+    color:var(--ink);
+    transition:transform .3s var(--ease);
+  }
+
+  /* ================= Bulle de contact (ordinateur : en haut à droite) ================= */
+  .cta{
+    position:fixed;
+    top:clamp(16px,3vh,28px);
+    right:clamp(16px,2.4vw,32px);
+    width:min(520px,calc(100vw - var(--dw) - 72px));
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px 8px 8px 22px;
+    border-radius:999px;
+    background:var(--blue);
+    color:var(--ink);
+    z-index:5;
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(-30px) scale(.85);
+    transform-origin:top right;
+    pointer-events:none;
+    box-shadow:0 18px 48px rgba(0,0,0,.3);
+    transition:opacity .45s ease, transform .7s cubic-bezier(.34,1.56,.64,1), visibility 0s linear .7s;
+  }
+  .cta.show{
+    opacity:1;
+    visibility:visible;
+    transform:none;
+    pointer-events:auto;
+    transition:opacity .45s ease, transform .7s cubic-bezier(.34,1.56,.64,1), visibility 0s;
+  }
+
+  .cta h2{
+    font-size:clamp(14px,1.2vw,17px);
+    font-weight:700;
+    letter-spacing:-.01em;
+    white-space:nowrap;
+  }
+  .cta form{flex:1;display:flex;gap:8px;min-width:0}
+  .cta input{
+    flex:1;
+    min-width:0;
+    height:clamp(40px,4.4vh,46px);
+    border:0;
+    border-radius:999px;
+    background:#fff;
+    color:var(--ink);
+    padding:0 18px;
+    font:inherit;
+    font-size:16px;
+    outline:none;
+  }
+  .cta input::placeholder{color:var(--muted)}
+  .cta input:focus{box-shadow:0 0 0 3px var(--ink)}
+  .cta button{
+    height:clamp(40px,4.4vh,46px);
+    padding:0 clamp(16px,1.6vw,22px);
+    border:0;
+    border-radius:999px;
+    background:var(--black);
+    color:#fff;
+    font:inherit;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:background .2s ease;
+  }
+  .cta button:hover{background:#2b2b2b}
+
+  .msg{
+    position:absolute;
+    right:0;
+    top:calc(100% + 10px);
+    padding:7px 14px;
+    border-radius:999px;
+    background:var(--black);
+    color:#fff;
+    font-size:13px;
+    white-space:nowrap;
+  }
+  .msg:empty{display:none}
+  .msg.ok{color:var(--blue)}
+
+  /* ================= Mobile et tablette ================= */
+  @media (max-width:900px), (max-height:520px){
+    :root{--dw:100vw;--hh:64px}
+
+    /* Le tiroir commence sous la barre noire : aucune languette ne passe sous elle */
+    .drawer{
+      top:var(--hh);
+      overflow-x:hidden;
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      touch-action:pan-y;
+    }
+    .dbody{
+      position:static;
+      display:block;
+      padding:28px 24px 24px;
+    }
+    .is-info .dbody{display:block}
+    .headline{margin:32px 0 0;font-size:clamp(24px,7vw,36px)}
+
+    /* Liste des languettes dans le tiroir */
+    .tabs-desk{display:none}
+    .tabs-mob{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:28px;
+      padding-bottom:220px;
+    }
+    .tabs-mob .tab,
+    .tabs-mob .tab.is-active{
+      margin-left:0;
+      width:100%;
+      min-height:150px;
+      padding:20px 22px;
+      will-change:transform;
+    }
+    /* La languette touchée part à droite et tire la page bleue */
+    .tabs-mob .tab.is-active{--x:100%}
+    .tabs-mob .ttl{font-size:22px}
+    .tbody{padding-right:40px}
+    .chev{right:18px}
+
+    .view-info,
+    .is-info .view-info{display:none}
+
+    /* Page bleue de même couleur que la languette, qui sort de la gauche */
+    .page{
+      display:block;
+      position:fixed;
+      top:var(--hh);
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:3;
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      touch-action:pan-y;
+      background:var(--blue);
+      color:var(--ink);
+      padding:clamp(24px,4vh,36px) 22px 240px;
+      transform:translateX(-100%);
+      visibility:hidden;
+      will-change:transform;
+      transition:transform .7s var(--ease), visibility 0s linear .7s;
+    }
+    .is-info .page{
+      transform:translateX(0);
+      visibility:visible;
+      transition:transform .7s var(--ease), visibility 0s;
+    }
+    .page .ci-title{font-size:clamp(28px,8vw,40px);margin-top:clamp(28px,6vh,48px)}
+
+    /* La bulle devient une barre noire qui monte depuis le bas */
+    .cta{
+      top:auto;
+      bottom:0;
+      left:0;
+      right:0;
+      width:auto;
+      flex-direction:column;
+      align-items:stretch;
+      gap:0;
+      padding:18px 16px calc(18px + env(safe-area-inset-bottom));
+      border-radius:24px 24px 0 0;
+      background:var(--black);
+      color:#fff;
+      transform:translateY(105%);
+      transform-origin:center bottom;
+      box-shadow:0 -12px 32px rgba(0,0,0,.3);
+      transition:transform .6s cubic-bezier(.2,.9,.25,1.06), visibility 0s linear .6s;
+    }
+    .cta.show{
+      transform:none;
+      transition:transform .6s cubic-bezier(.2,.9,.25,1.06), visibility 0s;
+    }
+    .cta h2{
+      color:#fff;
+      text-align:center;
+      font-size:17px;
+      margin-bottom:12px;
+      white-space:normal;
+    }
+    .cta form{flex:none;gap:8px}
+    .cta input{height:46px}
+    .cta button{height:46px;padding:0 20px;font-size:15px;background:var(--blue);color:var(--ink)}
+    .cta button:hover{background:var(--blue-hover)}
+    .msg{
+      position:static;
+      margin-top:8px;
+      padding:0;
+      background:none;
+      text-align:center;
+      font-size:13px;
+      color:#fff;
+      white-space:normal;
+    }
+    .msg.ok{color:var(--blue)}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
+  }
+</style>
 </head>
 <body>
-<!--
-  kind: service. EdelMark, Paco-Anders Rivas, canton de Vaud.
-  deal: palette paper-grey-brass (papier d’imprimerie, laiton, boutons encre);
-  type Onest; hero split; nav-mega; footer-columns; close-type; rhythm surface-pairs;
-  buttons block; mark arc. Moment: word-highlight.
-  Laiton traité #6c6418 : le #bfb21a tiré au sort est à 1,78:1 sur le papier.
-  photo-chapters et pinned-chapters non montés : un seul portrait, aucun chantier client.
--->
 
-<header class="site-header">
-  <div class="wrap header-inner">
-    <a class="skip-link" href="#top">Aller au contenu</a>
-    <a class="brand" href="#top">
-      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
-        <path d="M7 21C10 10 22 10 25 21" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
-      </svg>
-      <span>EdelMark</span>
-    </a>
+  <div class="bg" aria-hidden="true"></div>
 
-    <nav class="nav-desk" aria-label="Pages">
-      <div class="nav-offres">
-        <button type="button" class="nav-drop" aria-expanded="false" aria-controls="offres-panel">Offres</button>
-        <div class="mega" id="offres-panel" hidden>
-          <div class="wrap mega-grid">
-            <a href="#site">
-              <span class="mega-title">Site et réseaux</span>
-              <span class="mega-price">Sur devis</span>
-              <span class="mega-line">La page, les publications, les réponses.</span>
-            </a>
-            <a href="#ia">
-              <span class="mega-title">IA sur vos données</span>
-              <span class="mega-price">Abonnement mensuel</span>
-              <span class="mega-line">Vos données restent dans l’entreprise.</span>
-            </a>
-          </div>
-        </div>
-      </div>
-      <a href="#page">Site</a>
-      <a href="#methode">Méthode</a>
-      <a href="#donnees">Données</a>
-      <a href="#paco">Paco</a>
-    </nav>
-
-    <a class="btn btn-primary nav-cta" href="mailto:contact@edelmark.ch?subject=Devis%20%E2%80%94%20EdelMark">Demander un devis</a>
-
-    <button type="button" class="menu-btn" aria-expanded="false" aria-controls="menu">
-      <span class="menu-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Menu</span>
+  <!-- Barre noire -->
+  <header class="topbar">
+    <div class="brand">EDELMARK</div>
+    <button class="toggle" id="toggle" type="button" aria-expanded="false" aria-controls="drawer">
+      <span class="tlabel">Menu</span>
+      <span class="ico" aria-hidden="true"><i></i><i></i></span>
     </button>
-  </div>
+  </header>
 
-  <div class="menu" id="menu" hidden>
-    <div class="wrap menu-inner">
-      <a href="#offres">Offres</a>
-      <a href="#page">Site</a>
-      <a href="#methode">Méthode</a>
-      <a href="#donnees">Données</a>
-      <a href="#paco">Paco</a>
-      <a class="btn btn-primary" href="mailto:contact@edelmark.ch?subject=Devis%20%E2%80%94%20EdelMark">Demander un devis</a>
+  <!-- Tiroir blanc -->
+  <aside class="drawer" id="drawer">
+
+    <!-- Vue d'accueil -->
+    <div class="dbody">
+      <div class="kicker">Formation et transition vers l’IA</div>
+      <h2 class="headline">
+        <span class="ln">L’intelligence artificielle vous permet de</span>
+        <span class="ln"><span class="hl">produire plus, de manière plus efficace et pour moins cher.</span></span>
+        <span class="ln">Formez-vous et commencez la transition.</span>
+      </h2>
     </div>
-  </div>
-</header>
 
-<main id="top">
-
-  <section class="hero" data-enter>
-    <div class="wrap hero-grid">
-      <div class="hero-text">
-        <p class="notice">Sur devis pour le site. Abonnement mensuel pour l’IA.</p>
-        <h1>
-          <span class="line"><span class="line-in">Sites, réseaux et IA</span></span>
-          <span class="line"><span class="line-in">pour le canton de Vaud</span></span>
-        </h1>
-        <p class="lead enter-piece" style="--i:0">Je tiens le site et les réseaux. L’IA travaille sur vos données, qui restent les vôtres.</p>
-        <div class="actions enter-piece" style="--i:1">
-          <a class="btn btn-primary" href="mailto:contact@edelmark.ch?subject=Devis%20%E2%80%94%20EdelMark">Demander un devis</a>
-          <a class="btn btn-secondary" href="#offres">Voir les offres</a>
+    <!-- Vue d'une languette sélectionnée (ordinateur) -->
+    <div class="view-info" id="viewInfo">
+      <div class="card-info" id="cardInfo">
+        <div class="ci-top">
+          <button class="ci-back" type="button">← Retour</button>
+          <span class="ci-num" data-f="num"></span>
         </div>
-        <p class="fact enter-piece" style="--i:2">Je réponds sous 24 heures.</p>
-      </div>
-      <figure class="hero-visual">
-        <img src="paco-portrait.jpg" width="648" height="648" alt="Paco-Anders Rivas" fetchpriority="high" decoding="async">
-      </figure>
-    </div>
-  </section>
-
-  <section class="section section-surface" id="offres" style="--h: 1">
-    <div class="wrap">
-      <h2>Les deux offres</h2>
-      <p class="lede">Vous prenez l’une, l’autre, ou les deux. Le périmètre est fixé avant que je commence.</p>
-      <div class="offers">
-        <article class="reveal" id="site" style="--d:0ms">
-          <h3>Tenir le site et les réseaux</h3>
-          <p>Une page qui dit le métier, à qui il s’adresse, et comment on vous joint. J’écris les publications et je réponds aux messages, dans la voix du site.</p>
-          <p class="offer-foot">
-            <span class="offer-kicker">Annoncé avant d’écrire</span>
-            <span class="offer-price">Sur devis</span>
-          </p>
-        </article>
-        <article class="reveal" id="ia" style="--d:120ms">
-          <h3>Tenir l’IA sur vos données</h3>
-          <p>Documents, échanges, procédures&#8239;: tout reste dans l’entreprise. Je règle l’IA sur ce qui est déjà là, et je la tiens.</p>
-          <p class="offer-foot">
-            <span class="offer-kicker">Rien ne s’y ajoute</span>
-            <span class="offer-price">Abonnement mensuel</span>
-          </p>
-        </article>
+        <h3 class="ci-title" data-f="title"></h3>
+        <p class="ci-desc" data-f="desc"></p>
+        <div class="ci-body" data-f="body"></div>
       </div>
     </div>
+
+    <!-- Languettes (version mobile, dans le tiroir) -->
+    <div class="tabs-mob" id="tabsMob"></div>
+  </aside>
+
+  <!-- Page bleue (mobile), tirée par la languette touchée -->
+  <section class="page" id="page" aria-label="Contenu de la languette">
+    <div class="ci-top">
+      <button class="ci-back" type="button">← Retour</button>
+      <span class="ci-num" data-f="num"></span>
+    </div>
+    <h3 class="ci-title" data-f="title"></h3>
+    <p class="ci-desc" data-f="desc"></p>
+    <div class="ci-body" data-f="body"></div>
   </section>
 
-  <section class="section" id="page" style="--h: 1">
-    <div class="wrap page-grid">
-      <div class="page-copy">
-        <h2>Le site se tient</h2>
-        <p class="lede">Le nom, le métier, puis la façon d’écrire. La page se monte dans cet ordre.</p>
-      </div>
-      <figure class="mock" data-build aria-hidden="true">
-        <div class="mock-bar build" data-step="1"><span class="mock-mark"></span><span>Page</span></div>
-        <p class="mock-title build" data-step="2">Le métier, en clair</p>
-        <div class="mock-lines build" data-step="3"><span></span><span></span><span></span></div>
-        <p class="mock-cta build" data-step="4">Écrire</p>
-      </figure>
-    </div>
+  <!-- Languettes (version ordinateur, collées au tiroir) -->
+  <div class="tabs-desk" id="tabsDesk"></div>
+
+  <!-- Bulle de contact -->
+  <section class="cta" id="cta">
+    <h2>Je vous contact.</h2>
+    <form id="ctaForm" novalidate>
+      <input id="contact" type="text" placeholder="Numéro, Email" autocomplete="off" aria-label="Numéro, Email">
+      <button type="submit">Envoyer</button>
+    </form>
+    <p class="msg" id="msg" role="status"></p>
   </section>
 
-  <section class="section" id="donnees" style="--h: 1">
-    <div class="wrap">
-      <h2>Les données restent dans l’entreprise</h2>
-      <p class="statement" data-moment="word-highlight">
-        <span class="w">Pas</span>
-        <span class="w">un</span>
-        <span class="w">tableau</span>
-        <span class="w">de</span>
-        <span class="w">bord</span>
-        <span class="w">sorti</span>
-        <span class="w">d’un</span>
-        <span class="w">catalogue.</span>
-        <span class="w">Une</span>
-        <span class="w">IA</span>
-        <span class="w">réglée</span>
-        <span class="w">sur</span>
-        <span class="w">vos</span>
-        <span class="w w-strong">données,</span>
-        <span class="w">et</span>
-        <span class="w">tenue</span>
-        <span class="w">au</span>
-        <span class="w">mois.</span>
-      </p>
-      <div class="seq" data-seq aria-hidden="true">
-        <div class="vault">
-          <p class="vault-name">Dans l’entreprise</p>
-          <div class="docs">
-            <span class="doc" style="--sx:16px;--sy:-12px"></span>
-            <span class="doc" style="--sx:-20px;--sy:6px"></span>
-            <span class="doc" style="--sx:12px;--sy:14px"></span>
-            <span class="doc" style="--sx:-10px;--sy:-8px"></span>
-          </div>
-        </div>
-        <div class="saas">
-          <div class="tiles">
-            <span class="tile"></span>
-            <span class="tile"></span>
-            <span class="tile"></span>
-          </div>
-          <p class="answer">Le fonds reste ici.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+<script>
+  /* ----- Contenu des languettes (modifiez les textes ici) ----- */
+  const ITEMS = [
+    {
+      title:"Formation en entreprise",
+      desc:"Formation sur site ou à distance.",
+      body:`<p>Nous formons vos équipes à utiliser correctement l'intelligence artificielle. Nos principaux objectifs résident sur 3 points :</p>
+            <ul>
+              <li>1) Aider votre équipe à améliorer sa productivité et son confort de travail</li>
+              <li>2) Démystifier l'intelligence artificielle</li>
+              <li>3) Vous former aux pratiques d'optimisation</li>
+            </ul>`
+    },
+    {
+      title:"Conseil et produits IA",
+      desc:"Les bons produits IA, avec un plan clair et un budget maîtrisé.",
+      body:`<p>Nous effectuons un audit afin de vous conseiller de manière neutre sur les améliorations possibles au sein de votre entreprise et de construire des ressources uniques à votre métier.</p>
+            <p>Tout projet potentiel est orchestré directement via nos conseils.</p>`
+    },
+    {
+      title:"À propos",
+      desc:"Comment nous travaillons avec vous, du premier échange au résultat.",
+      body:`<p>Nous sommes une équipe d'informaticiens indépendants. Après avoir travaillé des années dans l'industrie pour des sociétés internationales, nous profitons de notre savoir-faire et de nos contacts pour participer à la transition vers l'intelligence artificielle. Trop peu et mal utilisée aujourd'hui.</p>
+            <p>Si vous avez des questions, laissez-nous une adresse e-mail ou un numéro et nous vous contacterons.</p>`
+    }
+  ];
 
-  <section class="section" id="methode" style="--h: 1">
-    <div class="wrap">
-      <h2>Trois temps</h2>
-      <ol class="steps">
-        <li class="reveal" style="--d:0ms">
-          <span class="step-n" aria-hidden="true">1</span>
-          <h3>Vous écrivez</h3>
-          <p>Deux lignes&#8239;: l’entreprise, et ce que le site ou les réseaux ne font pas aujourd’hui.</p>
-        </li>
-        <li class="reveal" style="--d:90ms">
-          <span class="step-n" aria-hidden="true">2</span>
-          <h3>Je livre le site</h3>
-          <p>Le devis est accepté avant. Les réseaux prennent ensuite la même voix.</p>
-        </li>
-        <li class="reveal" style="--d:180ms">
-          <span class="step-n" aria-hidden="true">3</span>
-          <h3>Je tiens l’IA</h3>
-          <p>Seulement si vous prenez l’abonnement. Vous pouvez vous arrêter au site.</p>
-        </li>
-      </ol>
-      <p class="bio" id="paco">Paco-Anders Rivas. Neuf ans en systèmes et réseaux, dont trois à accompagner des équipes sur leurs outils.</p>
-    </div>
-  </section>
+  const byId     = id => document.getElementById(id);
+  const pad      = n => String(n).padStart(2, "0");
+  const body     = document.body;
+  const drawer   = byId("drawer");
+  const pageEl   = byId("page");
+  const cardInfo = byId("cardInfo");
+  const toggle   = byId("toggle");
+  const tlabel   = toggle.querySelector(".tlabel");
 
-</main>
+  let activeIndex = null;
+  let settleTimer = null;
 
-<footer class="closing" id="ecrire">
-  <div class="wrap closing-grid">
-    <div class="close">
-      <h2>Écrire à EdelMark</h2>
-      <p>Dites l’entreprise et l’offre qui vous intéresse. Je réponds sous 24 heures.</p>
-      <a class="btn btn-primary btn-xl" href="mailto:contact@edelmark.ch?subject=Devis%20%E2%80%94%20EdelMark">Demander un devis</a>
-      <p class="close-mail"><a href="mailto:contact@edelmark.ch?subject=Devis%20%E2%80%94%20EdelMark">contact@edelmark.ch</a></p>
-    </div>
-    <div class="foot">
-      <div class="foot-cols">
-        <div>
-          <p class="foot-label">Offres</p>
-          <a href="#site">Le site et les réseaux</a>
-          <a href="#ia">L’IA sur vos données</a>
-        </div>
-        <div>
-          <p class="foot-label">Parcours</p>
-          <a href="#page">Le site se tient</a>
-          <a href="#methode">Trois temps</a>
-          <a href="#donnees">Les données</a>
-          <a href="#paco">Paco-Anders Rivas</a>
-        </div>
-        <div>
-          <p class="foot-label">Maison</p>
-          <p>Canton de Vaud</p>
-          <a href="mailto:contact@edelmark.ch?subject=Devis%20%E2%80%94%20EdelMark">contact@edelmark.ch</a>
-        </div>
-      </div>
-      <p class="legal">EdelMark, 2026. Ce site n’utilise ni cookies ni outil de suivi.</p>
-    </div>
-  </div>
-</footer>
+  /* ----- Génération des languettes (une version ordinateur, une version mobile) ----- */
+  function tabHTML(it, i){
+    const pct = Math.round((i + 1) / ITEMS.length * 100);
+    return `
+      <button class="tab" type="button" data-index="${i}" style="--i:${i}">
+        <span class="prog">
+          <span>${pad(i + 1)}</span>
+          <span class="bar"><i style="width:${pct}%"></i></span>
+          <span>${pad(ITEMS.length)}</span>
+        </span>
+        <span class="tbody">
+          <span class="ttl">${it.title}</span>
+          <span class="tdesc">${it.desc}</span>
+        </span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M9 4l8 8-8 8"/></svg>
+      </button>`;
+  }
+  byId("tabsDesk").innerHTML = ITEMS.map((it, i) => tabHTML(it, i)).join("");
+  byId("tabsMob").innerHTML  = ITEMS.map((it, i) => tabHTML(it, i)).join("");
 
-<script src="main.js"></script>
+  /* ----- Remplissage du contenu (vue ordinateur et page mobile) ----- */
+  function fillInfo(i){
+    const it = ITEMS[i];
+    const set = (name, fn) => document.querySelectorAll(`[data-f="${name}"]`).forEach(fn);
+    set("num",   el => el.textContent = `${pad(i + 1)} / ${pad(ITEMS.length)}`);
+    set("title", el => el.textContent = it.title);
+    set("desc",  el => el.textContent = it.desc);
+    set("body",  el => el.innerHTML   = it.body);
+  }
+
+  /* ----- Sélection ----- */
+  function markActive(i){
+    document.querySelectorAll(".tab").forEach(t => {
+      t.classList.toggle("is-active", i !== null && Number(t.dataset.index) === i);
+    });
+  }
+
+  /* Après un clic, l'entrée échelonnée n'est plus utilisée : les animations démarrent tout de suite */
+  function settle(){
+    clearTimeout(settleTimer);
+    body.classList.add("settled");
+  }
+
+  function select(i){
+    activeIndex = i;
+    markActive(i);
+    fillInfo(i);
+    cardInfo.scrollTop = 0;
+    pageEl.scrollTop = 0;
+    settle();
+    body.classList.add("is-info");
+    /* Important : on ne remet PAS le défilement du tiroir à zéro,
+       sinon la liste saute et les animations se déforment */
+  }
+
+  function deselect(){
+    activeIndex = null;
+    markActive(null);
+    body.classList.remove("is-info");
+  }
+
+  /* ----- Tiroir : s'ouvre automatiquement, se ferme avec Menu / Fermer ----- */
+  function setDrawer(open){
+    body.classList.toggle("drawer-open", open);
+    toggle.setAttribute("aria-expanded", String(open));
+    tlabel.textContent = open ? "Fermer" : "Menu";
+
+    clearTimeout(settleTimer);
+    body.classList.remove("settled");
+    if(open){
+      settleTimer = setTimeout(() => body.classList.add("settled"), 2600);
+    }else{
+      deselect();
+    }
+  }
+
+  toggle.addEventListener("click", () => setDrawer(!body.classList.contains("drawer-open")));
+  setTimeout(() => setDrawer(true), 400);
+
+  /* Sécurité : empêche tout décalage horizontal du tiroir */
+  drawer.addEventListener("scroll", () => {
+    if(drawer.scrollLeft !== 0) drawer.scrollLeft = 0;
+  }, {passive:true});
+
+  /* ----- Clics : languette (sélection / retour), boutons Retour ----- */
+  document.addEventListener("click", e => {
+    const t = e.target.closest(".tab");
+    if(t){
+      const i = Number(t.dataset.index);
+      if(activeIndex === i) deselect();
+      else select(i);
+      return;
+    }
+    if(e.target.closest(".ci-back")) deselect();
+  });
+
+  document.addEventListener("keydown", e => {
+    if(e.key !== "Escape") return;
+    if(activeIndex !== null) deselect();
+    else if(body.classList.contains("drawer-open")) setDrawer(false);
+  });
+
+  /* ----- Bulle de contact : apparaît après 5 secondes ----- */
+  const cta = byId("cta");
+  setTimeout(() => cta.classList.add("show"), 5000);
+
+  /* ----- Formulaire ----- */
+  const form  = byId("ctaForm");
+  const input = byId("contact");
+  const msg   = byId("msg");
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const v = input.value.trim();
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    const isPhone = /^\+?[\d\s().-]+$/.test(v) && v.replace(/\D/g, "").length >= 8;
+
+    if(!isEmail && !isPhone){
+      msg.className = "msg err";
+      msg.textContent = "Numéro ou email non valide.";
+      return;
+    }
+    msg.className = "msg ok";
+    msg.textContent = "Merci !";
+    form.reset();
+  });
+</script>
 </body>
 </html>
