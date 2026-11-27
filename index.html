@@ -428,6 +428,19 @@
   }
   .msg:empty{display:none}
   .msg.ok{color:var(--blue)}
+  .hp{position:absolute !important;left:-9999px;width:1px;height:1px;opacity:0}
+  .consent{
+    position:absolute;
+    left:14px;
+    top:calc(100% + 10px);
+    padding:5px 12px;
+    border-radius:999px;
+    background:rgba(0,0,0,.55);
+    color:#fff;
+    font-size:11px;
+    white-space:nowrap;
+  }
+  .cta:has(.msg:not(:empty)) .consent{display:none}
 
   /* ================= Mobile et tablette ================= */
   @media (max-width:900px), (max-height:520px){
@@ -547,6 +560,8 @@
       white-space:normal;
     }
     .msg.ok{color:var(--blue)}
+    .consent{position:static;margin-top:8px;padding:0;background:none;text-align:center;font-size:11px;color:rgba(255,255,255,.7);white-space:normal}
+    .cta:has(.msg:not(:empty)) .consent{display:block}
   }
 
   @media (prefers-reduced-motion:reduce){
@@ -613,11 +628,13 @@
 
   <!-- Bulle de contact -->
   <section class="cta" id="cta">
-    <h2>Je vous contact.</h2>
+    <h2>Je vous contacte.</h2>
     <form id="ctaForm" novalidate>
       <input id="contact" type="text" placeholder="Numéro, Email" autocomplete="off" aria-label="Numéro, Email">
+      <input type="text" name="website" id="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <button type="submit">Envoyer</button>
     </form>
+    <p class="consent">En envoyant, vous acceptez d'être recontacté par EdelMark.</p>
     <p class="msg" id="msg" role="status"></p>
   </section>
 
@@ -771,7 +788,10 @@
   const input = byId("contact");
   const msg   = byId("msg");
 
-  form.addEventListener("submit", e => {
+  const ENDPOINT = "https://edelmark-contact.pacoanders.workers.dev/contact";
+  const btn = form.querySelector("button");
+
+  form.addEventListener("submit", async e => {
     e.preventDefault();
     const v = input.value.trim();
     const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
@@ -782,9 +802,28 @@
       msg.textContent = "Numéro ou email non valide.";
       return;
     }
-    msg.className = "msg ok";
-    msg.textContent = "Merci !";
-    form.reset();
+    btn.disabled = true;
+    msg.className = "msg";
+    msg.textContent = "Envoi…";
+    try{
+      const r = await fetch(ENDPOINT, {
+        method:"POST",
+        headers:{"content-type":"application/json"},
+        body:JSON.stringify({contact:v, website:byId("website").value, page:location.href})
+      });
+      const d = await r.json().catch(() => ({}));
+      if(!r.ok || !d.ok) throw new Error(d.error || r.status);
+      msg.className = "msg ok";
+      msg.textContent = "Merci !";
+      form.reset();
+    }catch(err){
+      msg.className = "msg err";
+      msg.textContent = String(err.message) === "rate_limited"
+        ? "Trop d'envois, réessayez dans quelques minutes."
+        : "Envoi impossible. Écrivez-nous à info@edelmark.ch.";
+    }finally{
+      btn.disabled = false;
+    }
   });
 </script>
 </body>
