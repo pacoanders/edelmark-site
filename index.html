@@ -237,10 +237,19 @@
   .ci-body p + p{margin-top:12px}
   .ci-body ul{list-style:none;display:grid;gap:10px;margin-top:18px}
   .ci-body li{
-    padding:14px 18px;
-    border-radius:16px;
-    background:rgba(255,255,255,.5);
-    font-size:15px;
+    background:var(--black);
+    color:#fff;
+    border:0;
+    border-radius:0;
+    padding:10px 18px;
+    font:inherit;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    clip-path:polygon(0 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%);
+    line-height:1.4;
+    white-space:normal;
   }
 
   /* Page bleue (mobile) : tirée par la languette touchée, hors écran à gauche au repos */
@@ -628,7 +637,7 @@
 
   <!-- Bulle de contact -->
   <section class="cta" id="cta">
-    <h2>Je vous contacte.</h2>
+    <h2>Contact sous 24h</h2>
     <form id="ctaForm" novalidate>
       <input id="contact" type="text" placeholder="Numéro, Email" autocomplete="off" aria-label="Numéro, Email">
       <input type="text" name="website" id="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -646,9 +655,9 @@
       desc:"Formation sur site ou à distance.",
       body:`<p>Nous formons vos équipes à utiliser correctement l'intelligence artificielle. Nos principaux objectifs résident sur 3 points :</p>
             <ul>
-              <li>1) Aider votre équipe à améliorer sa productivité et son confort de travail</li>
-              <li>2) Démystifier l'intelligence artificielle</li>
-              <li>3) Vous former aux pratiques d'optimisation</li>
+              <li>Aider votre équipe à améliorer sa productivité et son confort de travail</li>
+              <li>Démystifier l'intelligence artificielle</li>
+              <li>Vous former aux pratiques d'optimisation</li>
             </ul>`
     },
     {
