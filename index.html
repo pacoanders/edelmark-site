@@ -585,10 +585,6 @@
   <!-- Barre noire -->
   <header class="topbar">
     <div class="brand">EDELMARK</div>
-    <button class="toggle" id="toggle" type="button" aria-expanded="false" aria-controls="drawer">
-      <span class="tlabel">Menu</span>
-      <span class="ico" aria-hidden="true"><i></i><i></i></span>
-    </button>
   </header>
 
   <!-- Tiroir blanc -->
@@ -596,7 +592,6 @@
 
     <!-- Vue d'accueil -->
     <div class="dbody">
-      <div class="kicker">Formation et transition vers l’IA</div>
       <h2 class="headline">
         <span class="ln">L’intelligence artificielle vous permet de</span>
         <span class="ln"><span class="hl">produire plus, de manière plus efficace et pour moins cher.</span></span>
@@ -680,8 +675,6 @@
   const drawer   = byId("drawer");
   const pageEl   = byId("page");
   const cardInfo = byId("cardInfo");
-  const toggle   = byId("toggle");
-  const tlabel   = toggle.querySelector(".tlabel");
 
   let activeIndex = null;
   let settleTimer = null;
@@ -747,11 +740,9 @@
     body.classList.remove("is-info");
   }
 
-  /* ----- Tiroir : s'ouvre automatiquement, se ferme avec Menu / Fermer ----- */
+  /* ----- Tiroir : s'ouvre automatiquement (fermeture retirée) ----- */
   function setDrawer(open){
     body.classList.toggle("drawer-open", open);
-    toggle.setAttribute("aria-expanded", String(open));
-    tlabel.textContent = open ? "Fermer" : "Menu";
 
     clearTimeout(settleTimer);
     body.classList.remove("settled");
@@ -762,7 +753,6 @@
     }
   }
 
-  toggle.addEventListener("click", () => setDrawer(!body.classList.contains("drawer-open")));
   setTimeout(() => setDrawer(true), 400);
 
   /* Sécurité : empêche tout décalage horizontal du tiroir */
@@ -782,11 +772,6 @@
     if(e.target.closest(".ci-back")) deselect();
   });
 
-  document.addEventListener("keydown", e => {
-    if(e.key !== "Escape") return;
-    if(activeIndex !== null) deselect();
-    else if(body.classList.contains("drawer-open")) setDrawer(false);
-  });
 
   /* ----- Bulle de contact : apparaît après 5 secondes ----- */
   const cta = byId("cta");
